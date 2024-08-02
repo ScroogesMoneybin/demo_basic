@@ -84,15 +84,15 @@ server <- function(input, output, session) {
   output$map9 <- renderTmap({
     map1<- tm_shape(map) + #choose dataset
       tm_borders("black", lwd=1) + #set black borders around precincts
-      tm_polygons(col=input$rb1, #Select 5 different columns to make maps out of their data
-                  style='quantile',
+      tm_polygons(col=input$rb1, #Select column from input radio button to color polygons
+                  style='quantile', #method to divide data into quantiles
                   breaks = 5,
                   legend.format = list(fun=function(x) paste0(round(x,0))), #make legend values be a percentage with no decimals
                   title = "",
-                  id = 'county_precinct', #set hover value to the precinct number of each row
-                  palette = 'YlOrRd',
+                  id = 'county_precinct', #set hover value to the county and precinct number of each row
+                  palette = 'YlOrRd', #color palette to color polygons 
                   popup.vars = details_displayed,  #choose the variables from the data that appear in the popup
-                  popup.format = list(fun=function(x) paste0(round(x,2))), zindex=401) +
+                  popup.format = list(fun=function(x) paste0(round(x,2)))) +
       tm_view(alpha = alpha_value, view.legend.position = c("right", "bottom")) +
       tm_facets(as.layers = TRUE) +
       tmap_options(check.and.fix = TRUE) +
@@ -104,6 +104,7 @@ server <- function(input, output, session) {
 
   
   #Plotly barchart
+  #create placeholder barchart before data is selected by map click
   output$bar_plotly <- renderPlotly({
     
 
